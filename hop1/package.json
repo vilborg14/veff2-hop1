@@ -1,0 +1,29 @@
+{
+  "name": "hop1",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "test": "jest",
+    "seed": "tsx --transpile-only prisma/seed.ts"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.13.8",
+    "@prisma/client": "^6.4.1",
+    "bcryptjs": "^3.0.2",
+    "cloudinary": "^2.5.1",
+    "hono": "^4.7.2",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.1",
+    "prisma": "^6.4.1",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.14",
+    "@types/multer": "^1.4.12",
+    "@types/node": "^20.17.22",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.6",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.7.1"
+  }
+}
