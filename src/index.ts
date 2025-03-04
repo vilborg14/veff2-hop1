@@ -1,10 +1,11 @@
 import { serve } from '@hono/node-server'
 import { Hono } from 'hono'
 import "dotenv/config";
-import { getAllUsers, createUser, loginUser, getUserById } from './users.db.js'
-import { create } from 'domain'
+import { getAllUsers, createUser, loginUser, getUserById } from './databaseCalls/users.db.js'
 import { authMiddleware, adminMiddleware } from "./middleware/authMiddleware.js";
 
+
+import taskRoutes from "./routes/taskRoutes.js";
 
 
 //const app = new Hono()
@@ -15,9 +16,22 @@ interface AuthenticatedUser {
   admin: boolean;
 }
 
+
+
 app.get('/', (c) => {
-  return c.text('Hello Hono!')
+  const routes = app.routes.map((route) => {
+    return {
+      method: route.method,
+      path: route.path,
+    };
+  });
+  return c.json(routes);
+
 })
+
+// routes all /tasks/... , from the file taskRoutes
+app.route("/tasks", taskRoutes);
+
 
 //app.get('/users', async (c) => {
   //const users = await getAllUsers();
