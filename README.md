@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Hópverkefni 1 Vefforritun 2
 
 Minnislista API
@@ -115,3 +116,32 @@ Images
 - 10% Myndastuðningur.
 - 10% Tæki, tól og test. README uppsett, verkefni keyrir í hýsingu.
 - 10% Hópavinna með Git og GitHub PR.
+=======
+```
+npm install
+npm run dev
+```
+
+```
+open http://localhost:3000
+```
+
+
+## Verkefni kröfur
+
+6 töflur af gögnum, tengja ehv amk
+
+
+
+- [ ] Gera alla userpaths með auðkenningarshiti
+
+
+## Nota
+- Hono
+- Prisma
+- Cloudinary
+
+- JWT token
+
+
+>>>>>>> 54ff227 (login og jwd authentication)
