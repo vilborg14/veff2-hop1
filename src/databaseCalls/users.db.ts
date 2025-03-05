@@ -1,14 +1,28 @@
-import exp from "constants";
-import { PrismaClient } from "@prisma/client";
-//import bcrypt from "bcryptjs";
+//import {bcrypt} from "bcryptjs";
 import jwt from "jsonwebtoken";
+import prisma from "../lib/client.js";
+import { z } from "zod";
+import xss from "xss";
 
 const bcrypt = await import("bcryptjs");
 
 // nýtt stuff að let prisma 
-const prisma = new PrismaClient();
-const SECRET_KEY = process.env.JWT_SECRET || "yurr"; 
+const SECRET_KEY = process.env.JWT_SECRET || "a-string-secret-at-least-256-bits-long"; 
 
+const userSchema = z.object({
+    id: z.number(),
+    username: z.string(),
+    password: z.string(),
+    admin: z.boolean(),
+});
+
+const createUserSchema = z.object({
+    username: z.string(),
+    password: z.string(),
+    admin: z.boolean(),
+})
+
+type User = z.infer<typeof userSchema>;
 
 export async function getUserById(id: string) {
     return await prisma.user.findUnique({
@@ -16,42 +30,79 @@ export async function getUserById(id: string) {
     });
 }
 
+export async function getUserByUsername(username: string) {
+    return await prisma.user.findUnique({
+        where: { username: username },
+    });
+}
+
 
 
 export async function loginUser(username: string, password: string) {
-    const user = await getUserById(username);
+    const user = await getUserByUsername(username);
     if (!user) return null;
 
+    console.log(user);
+
     const passwordMatch = await bcrypt.compare(password, user.password);
-    if (!passwordMatch) return null;
+    if (!passwordMatch) return "Invalid password";
 
     const token = jwt.sign({ id: user.id, admin: user.admin }, SECRET_KEY, { expiresIn: "1h" });
 
-    return { token, user };
+    console.log(token);
+    return token;
 }
 
-//let prisma = new PrismaClient();
-
-export async function getAllUsers() {
-    const users = await prisma.user.findMany();
+export async function getAllUsers(limit = 10, offset?: number) {
+    const users = await prisma.user.findMany(
+        {
+            take: limit,
+            skip: offset,
+        }
+    );
     return users ?? null;
 }
 
-export async function getUser(username: string) {
-    
-}
-
 export async function createUser(body: any) {
-    const hashedPassword = await bcrypt.hash(body.password, 10);
+    const safeUsername = xss(body.username);
+    const safePassword = xss(body.password);
+
+    const hashedPassword = await bcrypt.hash(safePassword, 10);
 
     const user = await prisma.user.create({
         data: {
-            username: body.username,
+            username: safeUsername,
             password: hashedPassword,
-            admin : false       
+            admin : false,     
         },
     });
     return user??null;
 }
 
+
+export async function editUser(id: string, body: User) {
+    const safeUsername = xss(body.username);
+    const safePassword = xss(body.password);    
+    const user = await prisma.user.update({
+        where: { id: id },
+        data: {
+            username: safeUsername,
+            password: safePassword,
+            admin : body.admin,
+        },
+    });
+    return user ?? null;
+}
+
+
 console.log("Bcrypt check:", bcrypt ? "Loaded" : "Not loaded");
+
+
+export default {
+    getAllUsers,
+    getUserById,
+    getUserByUsername,
+    createUser,
+    loginUser,
+    editUser,
+};
