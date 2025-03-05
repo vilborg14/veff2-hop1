@@ -1,15 +1,30 @@
-<<<<<<< HEAD
+
 # Hópverkefni 1 Vefforritun 2
 
 Minnislista API
 
+Mock admin: 
+```json 
+{
+    "username": "Admin123",
+    "password": "password"
+}
+```
+Mock user
+```json 
+{
+    "username": "mockuser",
+    "password": "password"
+}
+```
+
 ## Verkefna Requirements
-- [ ] 6 gagnatöflur, tengdar með `primary key`, `foreign key` og `unique`
+- [x] 6 gagnatöflur, tengdar með `primary key`, `foreign key` og `unique`
 - [ ] Viðeignadi gagnatög og lengdir (database og innsetning)
 - [ ] Mock gögn, 50 færslur amk
 - [ ] validation og sanitizion á gögnum (zod og xss)
 - [ ] Setja viðeigandi kóða (404, 401, 400), og passa samræmi
-- [ ] Nota middleware til að passa upp á heimildir stjórnenda
+- [x] Nota middleware til að passa upp á heimildir stjórnenda
 - [ ] Nota Cloudinary fyrir myndir, eingöngu `jpg` og `pnd`
 - [ ] Setja upp eslint, megum ráða reglusetti alveg
 - [ ] Setja upp jest test fyrir amk 4 endapunkta, og setja keyrsluleiðbeiningar í readme
@@ -18,19 +33,22 @@ Minnislista API
 
 
 ## Routes TODO (functional)
-Nota JWT token fyrir notendur. Aðeins admin getur framkvæmt eftirfarandi:
-- [ ] `GET /` Skilar lista af öllum mögulegum slóðum
 
-- [ ] `GET /users` Skilar öllum notendum, ef notandi er admin. Síður ef fj > 10. 
-- [ ] `GET /users/:id` Skilar ákveðnum notanda, ef innskráður notandi er admin.
+**ATH: laga routes `/users/:id` og `/users/me`, þær eru ehv að blandas**
+
+Nota JWT token fyrir notendur. Aðeins admin getur framkvæmt eftirfarandi:
+- [x] `GET /` Skilar lista af öllum mögulegum slóðum
+
+- [x] `GET /users` Skilar öllum notendum, ef notandi er admin. Síður ef fj > 10. 
+- [x] `GET /users/:id` Skilar ákveðnum notanda, ef innskráður notandi er admin.
 - [ ] `PATCH /users/:id` Breytir stöðu notanda, ef innskráður notandi er admin og er ekki að breyta á sjálfum sér.
 - [ ] `POST` bæta við hér..
 - [ ] `DELETE` .. skv verkefnalýsingu
 ---
-- [ ] `POST /users/register` Býr til notanda, býr aldrei til admin.
-- [ ] `POST /users/login` Skilar token ef login er rétt.
-- [ ] `GET /users/me` Skilar notandaupplýsingum ef notandi er innskráður.
-- [ ] `PATCH /users/me` Uppfærir username og/eða lykiorð, ef notandi er innskráður.
+- [x] `POST /users/register` Býr til notanda, býr aldrei til admin.
+- [x] `POST /users/login` Skilar token ef login er rétt.
+- [x] `GET /users/me` Skilar notandaupplýsingum ef notandi er innskráður.
+- [x] `PATCH /users/me` Uppfærir username og/eða lykiorð, ef notandi er innskráður.
 ---
 Tasks
 - [ ] `GET /tasks` Lista öll task á ákveðin notenda,nota síður ef það skilar >10 svörum
