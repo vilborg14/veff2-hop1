@@ -1,7 +1,6 @@
 import { Hono} from "hono";
 import { adminMiddleware, authMiddleware } from "../middleware/authMiddleware.js";
 import { getAllCategories,createCategory, deleteCategory} from "../databaseCalls/categories.db.js";
-import { title } from "process";
 
 const categoryRoutes = new Hono<{Variables: { user: AuthenticatedUser }}>();
 
