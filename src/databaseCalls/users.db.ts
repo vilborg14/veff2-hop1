@@ -47,10 +47,10 @@ export async function loginUser(username: string, password: string) {
     const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch) return "Invalid password";
 
-    const token = jwt.sign({ id: user.id, admin: user.admin }, SECRET_KEY, { expiresIn: "1h" });
+    const token = jwt.sign({ id: user.id, admin: user.admin, username: user.username }, SECRET_KEY, { expiresIn: "1h" });
 
     console.log(token);
-    return token;
+    return {token, user };
 }
 
 export async function getAllUsers(limit = 10, offset?: number) {

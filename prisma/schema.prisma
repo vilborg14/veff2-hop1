@@ -21,11 +21,14 @@ model User {
   tasks    Task[]
 }
 
+
+
 model Task {
   id          String      @id @default(uuid())
   title       String
   description String?
   priority    Boolean     @default(false)
+  status      String 
   modified    DateTime    @default(now())
   due         DateTime?
   deleted     Boolean     @default(false)
@@ -45,7 +48,7 @@ model Category {
 }
 
 model TaskImage {
-  id     Int    @id @default(autoincrement())
+  id     String    @id @default(uuid())
   url    String @unique
   taskId String
   task   Task   @relation(fields: [taskId], references: [id])

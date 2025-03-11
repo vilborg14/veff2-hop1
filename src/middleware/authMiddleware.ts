@@ -18,6 +18,7 @@ export async function authMiddleware(c: Context, next: Next) {
 
     try {
         const decoded = jwt.verify(token, SECRET_KEY);
+       
         c.set("user", decoded as AuthenticatedUser);
         console.log("Authenticated User ID:", c.get("user"));
 
