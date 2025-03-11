@@ -18,8 +18,7 @@ const userSchema = z.object({
 
 const createUserSchema = z.object({
     username: z.string(),
-    password: z.string(),
-    admin: z.boolean(),
+    password: z.string()
 })
 
 type User = z.infer<typeof userSchema>;
@@ -47,7 +46,8 @@ export async function loginUser(username: string, password: string) {
     const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch) return "Invalid password";
 
-    const token = jwt.sign({ id: user.id, admin: user.admin }, SECRET_KEY, { expiresIn: "1h" });
+    // TODO: change to resonable time
+    const token = jwt.sign({ id: user.id, admin: user.admin }, SECRET_KEY, { expiresIn: "3h" });
 
     console.log(token);
     return token;

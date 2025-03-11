@@ -1,6 +1,10 @@
 import { Hono} from "hono";
 
-const taskRoutes = new Hono();
+const taskRoutes = new Hono<{Variables: { user: AuthenticatedUser }}>();
+interface AuthenticatedUser {
+    id: string;
+    admin: boolean;
+}
 
 taskRoutes.get('/', (c) => {
     return c.json({ message: 'GET /tasks' });

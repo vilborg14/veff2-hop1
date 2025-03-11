@@ -41,7 +41,7 @@ Nota JWT token fyrir notendur. Aðeins admin getur framkvæmt eftirfarandi:
 
 - [x] `GET /users` Skilar öllum notendum, ef notandi er admin. Síður ef fj > 10. 
 - [x] `GET /users/:id` Skilar ákveðnum notanda, ef innskráður notandi er admin.
-- [ ] `PATCH /users/:id` Breytir stöðu notanda, ef innskráður notandi er admin og er ekki að breyta á sjálfum sér.
+- [x] `PATCH /users/:id` Breytir stöðu notanda, ef innskráður notandi er admin og er ekki að breyta á sjálfum sér.
 - [ ] `POST` bæta við hér..
 - [ ] `DELETE` .. skv verkefnalýsingu
 ---
@@ -58,9 +58,10 @@ Tasks
 - [ ] `GET /tasks/:id` Sækir stakt task, ef notandi á það.
 ---
 Category
-- [ ] `GET /categories` Ná í öll categories
-- [ ] `POST /categories` Búa til category
-- [ ] `DELETE /categories/:id` Eyða category
+- [x] `GET /categories` Ná í öll categories
+**Admin only routes** 
+- [x] `POST /categories` Búa til category
+- [x] `DELETE /categories/:id` Eyða category
 ---
 Tag
 TODO: bæta við og fjarlægja tögg á task
