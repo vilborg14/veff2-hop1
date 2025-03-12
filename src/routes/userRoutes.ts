@@ -1,6 +1,6 @@
 import { Hono } from 'hono';
 import { authMiddleware, adminMiddleware } from '../middleware/authMiddleware.js';
-import { getUserById, getUserByUsername, getAllUsers, createUser, loginUser, editUser } from '../databaseCalls/users.db.js';
+import { getUserById, getAllUsers, createUser, loginUser, editUser, validateUser } from '../databaseCalls/users.db.js';
 
 const userRoutes = new Hono<{Variables: { user: AuthenticatedUser }}>();
 
@@ -52,8 +52,8 @@ userRoutes.patch('/me', authMiddleware, async(c) => {
 userRoutes.get('/:id', authMiddleware, adminMiddleware,async(c) => {
     const user = c.get("user") as { id: string; username: string; admin: boolean };
 
-    const username = c.req.param('id');
-   // const id = c.req.param('id');
+    //const username = c.req.param('id');
+    const id = c.req.param('id');
 
     if (!user) {
         return c.json({ error: "user not found" }, 401);
@@ -63,8 +63,8 @@ userRoutes.get('/:id', authMiddleware, adminMiddleware,async(c) => {
         return c.json({ error: "Forbidden - Admin only" }, 403);
     }
 
-    const dbUser = await getUserByUsername(username);
-    // const dbUser = await getUserById(id);
+    //const dbUser = await getUserByUsername(username);
+    const dbUser = await getUserById(id);
     if (!dbUser) return c.json({ error: "User not found in database" }, 404);
     
     
@@ -86,11 +86,24 @@ userRoutes.patch('/:id', authMiddleware, adminMiddleware, async (c) => {
    create some action, or make somne other route Admin only? */
 
 userRoutes.post('/register', async(c) => {
-    const body = await c.req.json();
+
+    let userToCreate: unknown;
+
+    try {
+        userToCreate = await c.req.json();
+    } catch (error) {
+        return c.json({ error: "invalid json: " + error }, 400);
+    }
     
-    createUser(body);
+    const validUser = await validateUser(userToCreate);
+
+    if (!validUser.success) {
+        return c.json({ error: validUser.error.flatten(), message: "Invalid user"	 }, 400);
+    }
+
+    createUser(validUser.data);
     
-    return c.json({ message: 'POST /users/register', body });
+    return c.json({ message: 'POST /users/register', user: validUser });
 });
 
 userRoutes.post('/login', async(c) => {

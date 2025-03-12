@@ -10,29 +10,33 @@ const bcrypt = await import("bcryptjs");
 const SECRET_KEY = process.env.JWT_SECRET || "a-string-secret-at-least-256-bits-long"; 
 
 const userSchema = z.object({
-    id: z.number(),
-    username: z.string(),
+    id: z.string(),
+    username: z.string().max(100, "Username must be less than 100 characters").min(1, "Username must be at least 1 character"),
     password: z.string(),
     admin: z.boolean(),
 });
 
 const createUserSchema = z.object({
-    username: z.string(),
+    username: z.string().max(100, "Username must be less than 100 characters").min(1, "Username must be at least 1 character"),
     password: z.string()
 })
 
 type User = z.infer<typeof userSchema>;
 
-export async function getUserById(id: string) {
-    return await prisma.user.findUnique({
+export async function getUserById(id: string): Promise<User | null> {
+    const user = await prisma.user.findUnique({
         where: { id: id },
     });
+
+    return user ?? null;
 }
 
-export async function getUserByUsername(username: string) {
-    return await prisma.user.findUnique({
+export async function getUserByUsername(username: string): Promise<User | null> {
+    const user = await prisma.user.findUnique({
+        
         where: { username: username },
     });
+    return user ?? null;  
 }
 
 
@@ -53,7 +57,7 @@ export async function loginUser(username: string, password: string) {
     return token;
 }
 
-export async function getAllUsers(limit = 10, offset?: number) {
+export async function getAllUsers(limit = 10, offset?: number): Promise<Array<User> | null> {
     const users = await prisma.user.findMany(
         {
             take: limit,
@@ -63,7 +67,7 @@ export async function getAllUsers(limit = 10, offset?: number) {
     return users ?? null;
 }
 
-export async function createUser(body: any) {
+export async function createUser(body: z.infer<typeof createUserSchema>) {
     const safeUsername = xss(body.username);
     const safePassword = xss(body.password);
 
@@ -83,15 +87,22 @@ export async function createUser(body: any) {
 export async function editUser(id: string, body: User) {
     const safeUsername = xss(body.username);
     const safePassword = xss(body.password);    
+
+    const hashedPassword = await bcrypt.hash(safePassword, 10);
     const user = await prisma.user.update({
         where: { id: id },
         data: {
             username: safeUsername,
-            password: safePassword,
+            password: hashedPassword,
             admin : body.admin,
         },
     });
     return user ?? null;
+}
+
+export async function validateUser(userToValidate: unknown) {
+    const result = createUserSchema.safeParse(userToValidate);
+    return result;
 }
 
 
@@ -105,4 +116,5 @@ export default {
     createUser,
     loginUser,
     editUser,
+    validateUser
 };

@@ -5,7 +5,8 @@ import {
     createTask,
     getAllTasks,
     getTaskById,
-    editTask
+    editTask,
+    validateTask
 } from "../databaseCalls/tasks.db.js";
 
 const taskRoutes = new Hono<{Variables: { user: AuthenticatedUser }}>();
@@ -58,12 +59,25 @@ taskRoutes.get('/:id', authMiddleware, async (c) => {
 taskRoutes.post('/', authMiddleware,async (c) => {
     const user = c.get("user") as AuthenticatedUser;
     const userId = user.id;
-    const body = await c.req.json();
 
-    const newTask = await createTask(body, userId);
+    let taskToCreate: unknown;
 
+    try {
+        taskToCreate = await c.req.json();
+    } catch (error) {
+        return c.json({ error: "invalid json: " + error }, 400);
+    }
 
-    return c.json({ task: newTask });
+    const validTask = await validateTask(taskToCreate);
+
+    if (!validTask.success) {
+        return c.json({ error: validTask.error.flatten(), message: "Invalid task"	 }, 400);
+    }
+
+    await createTask(validTask.data, userId);
+
+    return c.json({ message: 'POST /tasks', task: validTask });
+    
 });
 
 taskRoutes.delete('/:id', authMiddleware, async (c) => {
@@ -96,15 +110,27 @@ taskRoutes.patch('/:id', authMiddleware, async(c) => {
     if (!user) {
         return c.json({ error: "User not found" }, 401);
     }
+    let taskToEdit: unknown;
 
-    const body = await c.req.json();
+    try {
+        taskToEdit = await c.req.json();
+    } catch (error) {
+        return c.json({ error: "invalid json: " + error }, 400);
+    }
 
-    const editedTask = await editTask(id, body);
+    const validTask = await validateTask(taskToEdit);
+
+    if (!validTask.success) {
+        return c.json({ error: validTask.error.flatten(), message: "Invalid task"	 }, 400);
+    }
+
+    const editedTask = await editTask(id, validTask.data);
+
+
+    
     return c.json({ task: editedTask, message: "task edited" });
     //return c.json({ message: 'PATCH /tasks/:id' });
 });
-
-
 
 
 // mynda routes koma probs hér
