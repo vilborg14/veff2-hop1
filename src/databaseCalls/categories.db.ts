@@ -4,11 +4,11 @@ import xss from "xss";
 
 const categorySchema = z.object({
     id: z.string(),
-    title: z.string(),
+    title: z.string().max(1000, "Title must be less than 1000 characters"),
 });
 
 const createCategorySchema = z.object({
-    title: z.string(),
+    title: z.string().max(1000, "Title must be less than 1000 characters"),
 });
 
 type Category = z.infer<typeof categorySchema>;

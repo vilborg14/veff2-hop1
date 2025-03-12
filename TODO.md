@@ -1,5 +1,8 @@
 
-- bæta við routes fyrir tag og myndir
+- Bæta við routes fyrir tag og myndir
+- Laga villukóða, 404 ekki til, 401 ekki leyfi, 400 viðeigandi villuskilaboð
+- Skrifa jest test á 4 endpoints, amk 1 aupkenningar og amk 1 sem tekur við gögnum (POST?) (Gott að bara ljúka af, 4 test done, ekki gleyma að documenta hvernig skal keyra test í README)
+
 
 
 # Hópverkefni 1 Vefforritun 2
@@ -16,7 +19,7 @@ Minnislista API
 - [ ] Nota Cloudinary fyrir myndir, eingöngu `jpg` og `pnd`
 - [x] Setja upp eslint, megum ráða reglusetti alveg
 - [ ] Setja upp jest test fyrir amk 4 endapunkta, og setja keyrsluleiðbeiningar í readme
-- [ ] Huga að almennu öryggi, OWASP top 10
+- [x] Huga að almennu öryggi, OWASP top 10 ? *probs done, þvi við erum að nota xxs, zod og middleware*
 - [ ] Setja upp á render + database á neon
 
 
@@ -44,6 +47,7 @@ Tasks
 - [x] `GET /tasks/:id` Sækir stakt task, ef notandi á það.
 ---
 Category
+**Óauðkendur notandi getur framkvæmt**
 - [x] `GET /categories` Ná í öll categories
 **Admin only routes** 
 - [x] `POST /categories` Búa til category
@@ -53,14 +57,14 @@ Tag
 TODO: bæta við og fjarlægja tögg á task
 - [ ] `POST /tags` Búa til tag
 - [ ] `GET /tags` Sækja öll tög
-- [ ] `POST` ...
-- [ ] `DELETE` ...
+... meira líklegast
 
 --- 
 Images
-- [ ] `GET /tasks/:taskId/images` sækja myndir sem tilheyra taski
-- [ ] `POST /tasks/:taskId/images` Bæta við mynd við task 
+- [ ] `GET /images` sækja myndir
+- [ ] `POST /images` Bæta við mynd 
 - [ ] `DELETE /images/:id` Eyðir mynd
+- [ ] `GET /images/:id` Nær í ákveðna mynd
 
 ## Gögn
 
@@ -104,16 +108,6 @@ Images
 - Hono: routes
 - Cloudinary: myndashit
 
-
-
-## Hópur ??
-
-- Ásgerður Júlía
-- Freydís Xuan
-- Hermann Ingi
-- Vilborg
-
-
 ## Mat
 - 25% Gagnagrunnur og gögn.
 - 30% Vefþjónustur.
@@ -122,23 +116,5 @@ Images
 - 10% Tæki, tól og test. README uppsett, verkefni keyrir í hýsingu.
 - 10% Hópavinna með Git og GitHub PR.
 =======
-```
-npm install
-npm run dev
-```
-
-```
-open http://localhost:3000
-```
 
 
-## Verkefni kröfur
-
-6 töflur af gögnum, tengja ehv amk
-
-## Nota
-- Hono
-- Prisma
-- Cloudinary
-
-- JWT token

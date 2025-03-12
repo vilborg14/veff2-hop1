@@ -31,10 +31,14 @@ npm run test # jest test
 }
 
 ```
+## Dæmi um köll í vefþjónustu
+...
+...
 
 
 
-### Hópmeðlimir
+
+### Hópmeðlimir, hópur 5
 |Nafn |Netfang|Notendanafn
 |---|----|--|
 |Ásgerður Júlía |ajg20@hi.is | `asgerdur03`

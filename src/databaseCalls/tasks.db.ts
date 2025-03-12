@@ -6,16 +6,16 @@ import xss from "xss";
 // TODO: laga scema fyrir task
 const taskSchema = z.object({
     id: z.string(),
-    title: z.string(),
+    title: z.string().max(1000, "Title must be less than 1000 characters").min(1, "Title must be at least 1 character"),
     description: z.string().nullable(),
-    due: z.date().nullable(),
+    due: z.date().nullable().optional(),
     categoryId: z.string().nullable(),
     userId: z.string().nullable(),
 });
 
 const createTaskSchema = z.object({
-    title: z.string(),
-    description: z.string().nullable(),
+    title: z.string().max(1000, "Title must be less than 1000 characters").min(1, "Title must be at least 1 character"),,
+    description: z.string().nullable().optional(),
     due: z.date().nullable(),
     categoryId: z.string().nullable(),
     userId: z.string().nullable(),

@@ -11,13 +11,13 @@ const SECRET_KEY = process.env.JWT_SECRET || "a-string-secret-at-least-256-bits-
 
 const userSchema = z.object({
     id: z.string(),
-    username: z.string(),
+    username: z.string().max(100, "Username must be less than 100 characters").min(1, "Username must be at least 1 character"),
     password: z.string(),
     admin: z.boolean(),
 });
 
 const createUserSchema = z.object({
-    username: z.string(),
+    username: z.string().max(100, "Username must be less than 100 characters").min(1, "Username must be at least 1 character"),
     password: z.string()
 })
 
