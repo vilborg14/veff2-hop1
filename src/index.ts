@@ -6,7 +6,7 @@ import { Hono } from 'hono'
 import taskRoutes from "./routes/taskRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
-
+import tagRoutes from "./routes/tagsRoutes";
 
 //const app = new Hono()
 
@@ -26,6 +26,7 @@ app.get('/', (c) => {
 app.route("/users", userRoutes);
 app.route("/tasks", taskRoutes);
 app.route("/categories", categoryRoutes);
+app.route("/tags", tagRoutes);
 
 serve({
   fetch: app.fetch,
