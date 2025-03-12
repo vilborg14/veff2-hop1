@@ -1,6 +1,6 @@
 import { Hono} from "hono";
 import { adminMiddleware, authMiddleware } from "../middleware/authMiddleware.js";
-import { getAllCategories,createCategory, deleteCategory} from "../databaseCalls/categories.db.js";
+import { getAllCategories,createCategory, deleteCategory, validateCategory} from "../databaseCalls/categories.db.js";
 
 const categoryRoutes = new Hono<{Variables: { user: AuthenticatedUser }}>();
 
@@ -19,20 +19,29 @@ categoryRoutes.get('/', async(c) => {
 
 
 categoryRoutes.post('/', authMiddleware,adminMiddleware, async(c) => {
-    try {
-        const admin = c.get("user") as AuthenticatedUser;
+    let categoryTocreate: unknown;
+
+    const admin = c.get("user") as AuthenticatedUser;
         
         if (!admin.admin) {
             return c.json({ error: "Forbidden - Admin only" }, 403);
         }
-        
-        const body = await c.req.json();
-        const newCategory = await createCategory(body.title);
-        return c.json(newCategory);
+
+    try {
+        categoryTocreate = await c.req.json();
     } catch (error) {
-        return c.json({ error: "Error creating category" }, 500);
+        return c.json({ error: "invalid json: " + error }, 400);
     }
     
+    const validCategory = await validateCategory(categoryTocreate);
+
+    if (!validCategory.success) {
+        return c.json({ error: validCategory.error.flatten(), message: "Invalid category"	 }, 400);
+    }
+
+    await createCategory(validCategory.data.title);
+    return c.json({ message: 'Created category: ' + validCategory.data.title });
+
     //return c.json({ message: 'POST /categories' });
 });
 
@@ -48,7 +57,7 @@ categoryRoutes.delete('/:id', authMiddleware, adminMiddleware, async (c) => {
         const id = c.req.param('id');
         await deleteCategory(id);
     } catch (error) {
-        return c.json({ error: "Error deleting category" }, 500);
+        return c.json({ error: "Error deleting category: " + error}, 500);
     }
     return c.json({ message: 'Deleted category with id: ' + c.req.param('id') });
     

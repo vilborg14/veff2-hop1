@@ -23,7 +23,7 @@ export async function authMiddleware(c: Context, next: Next) {
 
         return next();
     } catch (error) {
-        return c.json({ error: "Invalid token" }, 401);
+        return c.json({ error: "Invalid token: " + error  }, 401);
     }
 }
 

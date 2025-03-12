@@ -28,10 +28,9 @@ model Task {
   due         DateTime?
   categoryId  String?
   category    Category?   @relation(fields: [categoryId], references: [id])
-  images      TaskImage[]
   tags        TaskTags[]
-  User        User      @relation(fields: [userId], references: [id])
-  userId      String
+  User        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String    
 }
 
 model Category {
@@ -43,8 +42,6 @@ model Category {
 model TaskImage {
   id     Int    @id @default(autoincrement())
   url    String @unique
-  taskId String
-  task   Task   @relation(fields: [taskId], references: [id])
 }
 
 model Tag {

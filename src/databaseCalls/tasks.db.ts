@@ -1,4 +1,3 @@
-import exp from "constants";
 import prisma from "../lib/client.js";
 import { z } from "zod";
 import xss from "xss";
@@ -6,76 +5,84 @@ import xss from "xss";
 
 // TODO: laga scema fyrir task
 const taskSchema = z.object({
-    id: z.number(),
+    id: z.string(),
     title: z.string(),
-    description: z.string(),
-    priority: z.string(),
-    status: z.string(),
-    dueDate: z.string(),
-    category: z.string(),
-    tags: z.array(z.string()),
-    images: z.array(z.string()),
+    description: z.string().nullable(),
+    due: z.date().nullable(),
+    categoryId: z.string().nullable(),
+    userId: z.string().nullable(),
 });
 
 const createTaskSchema = z.object({
     title: z.string(),
-    description: z.string(),
-    priority: z.string(),
-    status: z.string(),
-    dueDate: z.string(),
-    category: z.string(),
-    tags: z.array(z.string()),
-    images: z.array(z.string()),
+    description: z.string().nullable(),
+    due: z.date().nullable(),
+    categoryId: z.string().nullable(),
+    userId: z.string().nullable(),
 });
 
 type Task = z.infer<typeof taskSchema>;
 
-export async function getAllTasks(userId: string) {
-    return await prisma.task.findMany(
+export async function getAllTasks(userId: string, limit = 10, offset?: number): Promise<Array<Task> | null> {
+    const tasks = await prisma.task.findMany(
         {
             where: { userId: userId },
+            take: limit,
+            skip: offset ?? 0
         }
     );
+    return tasks ?? null;
 }
 
-export async function getTaskById(id: string, userId: string) {
-    return await prisma.task.findUnique({
-        where: { id: id, userId: userId },
-    });
+export async function getTaskById(id: string, userId: string): Promise<Task | null> {
+    const task = await prisma.task.findUnique({
+        where: { 
+            id: id,
+            userId: userId 
+        },
+    })
+
+    return task ?? null;
 }
 
-export async function createTask(body: any, userId: string, id: string) {
+export async function createTask(body: z.infer<typeof createTaskSchema>, userId: string) {
     const safeTitle = xss(body.title);
-    const safeDescription = xss(body.description);
+    let safeDescription;
 
+    if (body.description) {
+        safeDescription = xss(body.description);
+    }
 
     return await prisma.task.create({
         data: {
             title: safeTitle,
             description: safeDescription,
-            category: body.category,
+            due: body.due,
+            categoryId: body.categoryId,
             userId: userId,
         },
     });
 }
 
-export async function editTask(id: string, body: any) {
+export async function editTask(id: string, body: z.infer<typeof createTaskSchema>) {
     const safeTitle = xss(body.title);
-    const safeDescription = xss(body.description);
+    let safeDescription;
 
+    if (body.description) {
+        safeDescription = xss(body.description);
+    }
+    
     return await prisma.task.update({
         where: { id: id},
         data: {
-            title: safeTitle,
-            description: safeDescription
+            title: safeTitle ?? undefined,
+            description: safeDescription ?? undefined,
+            due: body.due ?? undefined,
+            categoryId: body.categoryId ?? undefined
         },
     });
     
 }
-
-
-
-
 
 export async function deleteTask(id: string, userId : string) {
     return await prisma.task.delete({
@@ -84,4 +91,10 @@ export async function deleteTask(id: string, userId : string) {
             userId: userId 
         },
     });
+}
+
+
+export async function validateTask(task: unknown) {
+    const result = createTaskSchema.safeParse(task);
+    return result;
 }
