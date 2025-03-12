@@ -38,12 +38,10 @@ Mock user
 
 Nota JWT token fyrir notendur. Aðeins admin getur framkvæmt eftirfarandi:
 - [x] `GET /` Skilar lista af öllum mögulegum slóðum
-
 - [x] `GET /users` Skilar öllum notendum, ef notandi er admin. Síður ef fj > 10. 
 - [x] `GET /users/:id` Skilar ákveðnum notanda, ef innskráður notandi er admin.
-- [ ] `PATCH /users/:id` Breytir stöðu notanda, ef innskráður notandi er admin og er ekki að breyta á sjálfum sér.
-- [ ] `POST` bæta við hér..
-- [ ] `DELETE` .. skv verkefnalýsingu
+- [x] `PATCH /users/:id` Breytir stöðu notanda, ef innskráður notandi er admin og er ekki að breyta á sjálfum sér.
+
 ---
 - [x] `POST /users/register` Býr til notanda, býr aldrei til admin.
 - [x] `POST /users/login` Skilar token ef login er rétt.
@@ -51,16 +49,17 @@ Nota JWT token fyrir notendur. Aðeins admin getur framkvæmt eftirfarandi:
 - [x] `PATCH /users/me` Uppfærir username og/eða lykiorð, ef notandi er innskráður.
 ---
 Tasks
-- [ ] `GET /tasks` Lista öll task á ákveðin notenda,nota síður ef það skilar >10 svörum
-- [ ] `POST /tasks` Búa til nýtt task, nota JWT til að setja á réttan user.
-- [ ] `PATCH /tasks/:id` Uppfæra ákveðið task, innskráður notandi á það.
-- [ ] `DELETE /tasks/:id` Eyða ákveðnu taski, ef notandi á það.
-- [ ] `GET /tasks/:id` Sækir stakt task, ef notandi á það.
+- [x] `GET /tasks` Lista öll task á ákveðin notenda,nota síður ef það skilar >10 svörum
+- [x] `POST /tasks` Búa til nýtt task, nota JWT til að setja á réttan user.
+- [x] `PATCH /tasks/:id` Uppfæra ákveðið task, innskráður notandi á það.
+- [x] `DELETE /tasks/:id` Eyða ákveðnu taski, ef notandi á það.
+- [x] `GET /tasks/:id` Sækir stakt task, ef notandi á það.
 ---
 Category
-- [ ] `GET /categories` Ná í öll categories
-- [ ] `POST /categories` Búa til category
-- [ ] `DELETE /categories/:id` Eyða category
+- [x] `GET /categories` Ná í öll categories
+**Admin only routes** 
+- [x] `POST /categories` Búa til category
+- [x] `DELETE /categories/:id` Eyða category
 ---
 Tag
 TODO: bæta við og fjarlægja tögg á task

@@ -1,7 +1,5 @@
 import { serve } from '@hono/node-server'
 import { Hono } from 'hono'
-import getAllUsers, { createUser, loginUser, getUserById } from './databaseCalls/users.db.js'
-import { authMiddleware, adminMiddleware } from "./middleware/authMiddleware.js";
 
 
 // routes from folder

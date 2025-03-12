@@ -25,22 +25,18 @@ model Task {
   id          String      @id @default(uuid())
   title       String
   description String?
-  priority    Boolean     @default(false)
-  modified    DateTime    @default(now())
   due         DateTime?
-  deleted     Boolean     @default(false)
-  completed   Boolean     @default(false)
   categoryId  String?
   category    Category?   @relation(fields: [categoryId], references: [id])
   images      TaskImage[]
   tags        TaskTags[]
-  User        User?       @relation(fields: [userId], references: [id])
-  userId      String?
+  User        User      @relation(fields: [userId], references: [id])
+  userId      String
 }
 
 model Category {
   id    String @id @default(uuid())
-  title String
+  title String 
   tasks Task[]
 }
 
