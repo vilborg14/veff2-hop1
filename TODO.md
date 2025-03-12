@@ -55,9 +55,10 @@ Category
 ---
 Tag
 TODO: bæta við og fjarlægja tögg á task
-- [ ] `POST /tags` Búa til tag
-- [ ] `GET /tags` Sækja öll tög
-... meira líklegast
+- [x] `POST /tags` Búa til tag
+- [x] `POST /:taskId/tags/:tagId` Setur tag á task 
+- [x] `GET /tags` Sækja öll tög
+- [x] `DELETE /:taskId/tags/:tagId` Eyðir tag
 
 --- 
 Images
