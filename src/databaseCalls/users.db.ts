@@ -1,6 +1,6 @@
 //import {bcrypt} from "bcryptjs";
 import * as jwt from "jsonwebtoken";
-import prisma from "../lib/client";
+import prisma from "../lib/client.js";
 import { z } from "zod";
 import xss from "xss";
 import * as bcrypt from "bcrypt";
