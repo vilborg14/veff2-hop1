@@ -14,7 +14,7 @@
     "@hono/node-server": "^1.13.8",
     "@prisma/client": "^6.4.1",
     "bcryptjs": "^3.0.2",
-    "cloudinary": "^2.5.1",
+    "cloudinary": "^2.6.0",
     "dotenv": "^16.4.7",
     "hono": "^4.7.2",
     "jsonwebtoken": "^9.0.2",

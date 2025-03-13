@@ -58,3 +58,9 @@ model TaskTags {
 
   @@id([taskId, tagId]) // Composite key for many-to-many relation
 }
+
+model Image {
+  id        String @id @default(uuid())
+  url       String
+  publicId  String @unique // Used to delete from Cloudinary
+}

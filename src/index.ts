@@ -6,7 +6,8 @@ import { Hono } from 'hono'
 import taskRoutes from "./routes/taskRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
-import tagRoutes from "./routes/tagsRoutes";
+import tagRoutes from "./routes/tagsRoutes.js";
+import imageRoutes from "./routes/imageRoutes.js";
 
 //const app = new Hono()
 
@@ -27,6 +28,7 @@ app.route("/users", userRoutes);
 app.route("/tasks", taskRoutes);
 app.route("/categories", categoryRoutes);
 app.route("/tags", tagRoutes);
+app.route("/images", imageRoutes);
 
 serve({
   fetch: app.fetch,
