@@ -24,7 +24,7 @@ categoryRoutes.post('/', authMiddleware,adminMiddleware, async(c) => {
     const admin = c.get("user") as AuthenticatedUser;
         
         if (!admin.admin) {
-            return c.json({ error: "Forbidden - Admin only" }, 403);
+            return c.json({ error: "Forbidden - Admin only" }, 401);
         }
 
     try {
@@ -51,13 +51,13 @@ categoryRoutes.delete('/:id', authMiddleware, adminMiddleware, async (c) => {
         const admin = c.get("user") as AuthenticatedUser;
         
         if (!admin.admin) {
-            return c.json({ error: "Forbidden - Admin only" }, 403);
+            return c.json({ error: "Forbidden - Admin only" }, 401);
         }
         
         const id = c.req.param('id');
         await deleteCategory(id);
     } catch (error) {
-        return c.json({ error: "Error deleting category: " + error}, 500);
+        return c.json({ error: "Error deleting category: " + error}, 400);
     }
     return c.json({ message: 'Deleted category with id: ' + c.req.param('id') });
     
