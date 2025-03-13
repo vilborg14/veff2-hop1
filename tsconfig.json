@@ -4,13 +4,13 @@
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "strict": true,
-    "verbatimModuleSyntax": true,
+    //"verbatimModuleSyntax": true,
     "skipLibCheck": true,
     "types": [
       "node"
     ],
     "outDir": "dist",
     "jsx": "react-jsx",
-    "jsxImportSource": "hono/jsx",
+    "jsxImportSource": "hono/jsx"
   }
 }

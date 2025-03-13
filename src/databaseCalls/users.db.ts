@@ -1,10 +1,11 @@
 //import {bcrypt} from "bcryptjs";
-import jwt from "jsonwebtoken";
-import prisma from "../lib/client.js";
+import * as jwt from "jsonwebtoken";
+import prisma from "../lib/client";
 import { z } from "zod";
 import xss from "xss";
+import * as bcrypt from "bcrypt";
 
-const bcrypt = await import("bcryptjs");
+//const bcrypt = await import("bcryptjs");
 
 // nýtt stuff að let prisma 
 const SECRET_KEY = process.env.JWT_SECRET || "a-string-secret-at-least-256-bits-long"; 
