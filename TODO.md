@@ -46,13 +46,6 @@ Tasks
 - [x] `DELETE /tasks/:id` Eyða ákveðnu taski, ef notandi á það.
 - [x] `GET /tasks/:id` Sækir stakt task, ef notandi á það.
 ---
-Category
-**Óauðkendur notandi getur framkvæmt**
-- [x] `GET /categories` Ná í öll categories
-**Admin only routes** 
-- [x] `POST /categories` Búa til category
-- [x] `DELETE /categories/:id` Eyða category
----
 Tag
 TODO: bæta við og fjarlægja tögg á task
 - [x] `POST /tags` Búa til tag
@@ -60,7 +53,14 @@ TODO: bæta við og fjarlægja tögg á task
 - [x] `GET /tags` Sækja öll tög
 - [x] `DELETE /:taskId/tags/:tagId` Eyðir tag
 
---- 
+---
+Category
+**Óauðkendur notandi getur framkvæmt**
+- [x] `GET /categories` Ná í öll categories
+**Admin only routes** 
+- [x] `POST /categories` Búa til category
+- [x] `DELETE /categories/:id` Eyða category
+---
 Images
 - [ ] `GET /images` sækja myndir
 - [ ] `POST /images` Bæta við mynd 
@@ -102,7 +102,6 @@ Images
 
 
 ## Tól
-
 - Typescript
 - Node.js
 - Prisma: database, postgres

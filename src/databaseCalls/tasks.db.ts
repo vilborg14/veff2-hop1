@@ -47,18 +47,19 @@ export async function getTaskById(id: string, userId: string): Promise<Task | nu
 
 export async function createTask(body: z.infer<typeof createTaskSchema>, userId: string) {
     const safeTitle = xss(body.title);
+    /*
     let safeDescription;
 
     if (body.description) {
         safeDescription = xss(body.description);
-    }
+    }*/
 
     return await prisma.task.create({
         data: {
             title: safeTitle,
-            description: safeDescription,
-            due: body.due,
-            categoryId: body.categoryId,
+            description: body.description ?? null,
+            due: body.due ?? null,
+            categoryId: body.categoryId ?? null,	
             userId: userId,
         },
     });
@@ -92,7 +93,6 @@ export async function deleteTask(id: string, userId : string) {
         },
     });
 }
-
 
 export async function validateTask(task: unknown) {
     const result = createTaskSchema.safeParse(task);

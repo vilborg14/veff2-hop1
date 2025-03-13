@@ -11,6 +11,7 @@ interface AuthenticatedUser {
 
 /* Admin only route     */
 userRoutes.get('/', authMiddleware, adminMiddleware, async(c) => {
+    
     const users = await getAllUsers();
     //return c.json({ message: 'GET /users', users });
     return c.json(users)

@@ -98,7 +98,6 @@ taskRoutes.delete('/:id', authMiddleware, async (c) => {
     return c.json({ message: 'task deleted with id: ' + id });
 });
 
-
 taskRoutes.patch('/:id', authMiddleware, async(c) => {
     const user = c.get("user") as AuthenticatedUser;
     const id = c.req.param('id');
@@ -133,6 +132,16 @@ taskRoutes.patch('/:id', authMiddleware, async(c) => {
 });
 
 
-// mynda routes koma probs hér
+// assign and remove tags to/from tasks
+taskRoutes.post('/:taskId/tags/:tagId', authMiddleware, async (c) => {
+    
+
+});
+
+taskRoutes.delete('/:taskId/tags/:tagId', authMiddleware, async (c) => {
+
+});
+
+
 
 export default taskRoutes
