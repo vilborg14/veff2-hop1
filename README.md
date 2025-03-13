@@ -42,6 +42,6 @@ npm run test # jest test
 |Nafn |Netfang|Notendanafn|
 |---|----|--|
 |Ásgerður Júlía |ajg20@hi.is | `asgerdur03`| 
-|Freydís Xuan|fxl @hi.is|`freydisxuan`|
-|Hermann Ingi|hih @hi.is|`hemmih`|
+|Freydís Xuan|fxl1@hi.is|`freydisxuan`|
+|Hermann Ingi|hih65@hi.is|`hemmih`|
 |Vilborg|vie15@hi.is|`vilborg14`|

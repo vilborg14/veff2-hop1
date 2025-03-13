@@ -3,7 +3,6 @@ import { z } from "zod";
 import xss from "xss";
 
 
-// TODO: laga scema fyrir task
 const taskSchema = z.object({
     id: z.string(),
     title: z.string().max(1000, "Title must be less than 1000 characters").min(1, "Title must be at least 1 character"),
