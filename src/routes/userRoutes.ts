@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
 import { authMiddleware, adminMiddleware } from '../middleware/authMiddleware.js';
 import { getUserById, getAllUsers, createUser, loginUser, editUser, validateUser } from '../databaseCalls/users.db.js';
-
+ 
 const userRoutes = new Hono<{Variables: { user: AuthenticatedUser }}>();
 
 interface AuthenticatedUser {

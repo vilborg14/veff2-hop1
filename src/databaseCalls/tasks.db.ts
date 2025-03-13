@@ -14,7 +14,7 @@ const taskSchema = z.object({
 });
 
 const createTaskSchema = z.object({
-    title: z.string().max(1000, "Title must be less than 1000 characters").min(1, "Title must be at least 1 character"),,
+    title: z.string().max(1000, "Title must be less than 1000 characters").min(1, "Title must be at least 1 character"),
     description: z.string().nullable().optional(),
     due: z.date().nullable(),
     categoryId: z.string().nullable(),
