@@ -27,7 +27,7 @@ npm run test # jest test
 ```json
 {
     "username": "admin",
-    "password": "password
+    "password": "password"
 }
 
 ```
