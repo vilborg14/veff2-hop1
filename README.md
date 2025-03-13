@@ -5,6 +5,10 @@
 ***Bæta við í lokinn***
 
 ## Keyrsla verkefnis
+
+postman_collection.json skrá er í rót verkefnis, hægt er að opna hana í postman, þar eru allir routes, með dæmi um innsettningu. 
+
+
 ```bash
 git clone <repo url>
 
@@ -13,6 +17,10 @@ cd veff2-hop1
 npm install 
 
 ## prisma todo hér + .env
+
+
+npx prisma migrate reset # ef database er ekki tómur
+npx ts-node prisma/seed.js # seeder for prisma
 
 npm run dev  #localhost:3000
 
@@ -27,6 +35,10 @@ npm run test # jest test
 ```json
 {
     "username": "admin",
+    "password": "password"
+}
+{
+    "username" : "user1",
     "password": "password"
 }
 
