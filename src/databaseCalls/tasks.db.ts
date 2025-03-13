@@ -98,3 +98,28 @@ export async function validateTask(task: unknown) {
     const result = createTaskSchema.safeParse(task);
     return result;
 }
+
+
+export async function assignTagToTask(taskId: string, tagId: number) {
+    const taskTag = await prisma.taskTags.create({
+        data: {
+            taskId: taskId,
+            tagId: tagId
+        }
+    })
+
+    return taskTag;
+
+}
+
+export async function removeTagFromTask(taskId: string, tagId: number) {
+    const taskTag = await prisma.taskTags.delete({
+        where: {
+            taskId_tagId: {
+                taskId: taskId,
+                tagId: tagId
+            }
+        }
+    })
+    return taskTag;
+}
