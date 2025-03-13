@@ -88,15 +88,13 @@ async function main() {
     await prisma.taskImage.createMany({
         data: [
             {
-                id: 1,
                 url: "https://example.com/image1.jpg",
             },
             {
-                id: 2,
                 url: "https://example.com/image2.jpg",
             },
             {
-                id: 3,
+
                 url: "https://example.com/image3.jpg",
             }
         ],

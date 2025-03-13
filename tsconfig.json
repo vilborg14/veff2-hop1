@@ -2,8 +2,7 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "NodeNext",
-    "moduleResolution": "node",
-    "esModuleInterop": true, 
+    "moduleResolution": "NodeNext",
     "strict": true,
     //"verbatimModuleSyntax": true,
     "skipLibCheck": true,
