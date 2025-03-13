@@ -6,7 +6,7 @@
 - 
 
 
-# Hópverkefni 1 Vefforritun 2
+# Hópverkefni 1 Vefforritun 2 
 
 Minnislista API
 
@@ -64,10 +64,9 @@ Category
 ---
 Images
 **Opið route, allir, óinnskráðir**
-- [ ] `GET /images` sækja myndir
-- [ ] `POST /images` Bæta við mynd 
-- [ ] `DELETE /images/:id` Eyðir mynd
-- [ ] `GET /images/:id` Nær í ákveðna mynd
+- [x] `GET /images` sækja myndir
+- [x] `POST /images` Bæta við mynd 
+- [x] `DELETE /images/:id` Eyðir mynd
 
 ## Mat
 - 25% Gagnagrunnur og gögn.

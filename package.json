@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "test": "jest",
-    "seed": "tsx --transpile-only prisma/seed.ts",
+    "seed": "NODE_OPTIONS='--loader ts-node/esm' ts-node prisma/seed.ts",
     "build": "tsc",
     "start": "node ./dist/src/index.js",
     "lint": "eslint . --ext .ts",
