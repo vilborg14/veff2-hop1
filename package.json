@@ -3,8 +3,6 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage",
-    "seed": "tsx --transpile-only prisma/seed.ts",
     "build": "tsc",
     "start": "node ./dist/src/index.js",
     "lint": "eslint . --ext .ts",
@@ -18,7 +16,6 @@
     "cloudinary": "^2.5.1",
     "hono": "^4.7.2",
     "jsonwebtoken": "^9.0.2",
-    "multer": "^1.4.5-lts.1",
     "prisma": "^6.4.1",
     "xss": "^1.0.15",
     "zod": "^3.24.2"
