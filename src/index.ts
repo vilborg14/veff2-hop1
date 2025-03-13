@@ -33,9 +33,13 @@ app.onError((err, c) => {
   return c.json({ error: err.message }, 500);
 })
 
-serve({
-  fetch: app.fetch,
-  port: 3000
-}, (info) => {
-  console.log(`Server is running on http://localhost:${info.port}`)
-});
+if (process.env.NODE_ENV !== "test") {
+  serve(
+    { fetch: app.fetch, port: 3000 },
+    (info) => {
+      console.log(`Server is running on http://localhost:${info.port}`);
+    }
+  );
+}
+
+export default app;
