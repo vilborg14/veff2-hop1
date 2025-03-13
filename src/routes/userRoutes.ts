@@ -11,42 +11,15 @@ interface AuthenticatedUser {
 
 /* Admin only route     */
 userRoutes.get('/', authMiddleware, adminMiddleware, async(c) => {
+    const user = c.get("user") as AuthenticatedUser;
+    if (!user || !user.admin) {
+        return c.json({ error: "Forbidden - Admin only" }, 401);
+    }
+    
     const users = await getAllUsers();
     //return c.json({ message: 'GET /users', users });
     return c.json(users)
 });
-
-userRoutes.get('/me', authMiddleware,async(c) => {
-    const user = c.get("user") as { id: string; username: string; admin: boolean };
-    
-    if (!user) return c.json({ error: "User not found" }, 404);
-    
-    const dbUser = await getUserById(user.id);
-    if (!dbUser) return c.json({ error: "User not found in database" }, 404);
-    
-    return c.json({message: 'GET /users/me', user: dbUser});
-
-});
-
-// TODO: fix the /:id and /me routes, they are mixing up, but working
-userRoutes.patch('/me', authMiddleware, async(c) => {
-    const user = c.get("user") as { id: string; username: string; admin: boolean };
-    const editedUser = await c.req.json();
-
-    
-    if (!user) return c.json({ error: "User not found" }, 404);
-    
-    const dbUser = await getUserById(user.id);
-
-    if (!dbUser) return c.json({ error: "User not found in database" }, 404);
-
-    const changedUser = await editUser(user.id, editedUser);
-
-    console.log("Changed user:", changedUser);
-    console.log("edited user:", editedUser);
-
-    return c.json({ message: 'PATCH /users/me', user: changedUser });
-})
 
 /* Admin only route */
 userRoutes.get('/:id', authMiddleware, adminMiddleware,async(c) => {
@@ -75,18 +48,33 @@ userRoutes.get('/:id', authMiddleware, adminMiddleware,async(c) => {
     //return c.json({ message: 'GET /users/:id' });
 });
 
-/* Admin only route */
+
 userRoutes.patch('/:id', authMiddleware, adminMiddleware, async (c) => {
+    const user = c.get("user") as { id: string; username: string; admin: boolean };
+
+    if (!user) {
+        return c.json({ error: "user not found" }, 401);
+    }
+
+    if (!user.admin) {
+        return c.json({ error: "Forbidden - Admin only" }, 403);
+    }
+
+    const id = c.req.param('id');
+    const body = await c.req.json();
+    try {
+        const result = await editUser(id, body);
+        return c.json(result);
+    } catch (error) {
+        return c.json({ error: "Error editing user: " + error}, 400);
+    }
 
 
-    return c.json({ message: 'PATCH /users' });
+   // return c.json({ message: 'PATCH /users' });
 });
 
-/* Needs POST and DELETE admin only action, 
-   create some action, or make somne other route Admin only? */
 
 userRoutes.post('/register', async(c) => {
-
     let userToCreate: unknown;
 
     try {
@@ -108,20 +96,52 @@ userRoutes.post('/register', async(c) => {
 
 userRoutes.post('/login', async(c) => {
     const body = await c.req.json();
-
-    const result = await loginUser(body.username, body.password);
+    try {
+        const result = await loginUser(body.username, body.password);
     
     if (!result) {
         return c.json({ error: "Invalid credentials" }, 401);
     }
 
-    //return c.json({ token: result.token, user: result.user });
-
     return c.json({ message: 'POST /users/login', token : result });
+    }
+    catch (error) {
+        return c.json({ error: error }, 400);
+    }
 
-    //return c.json({ message: 'POST /users/login' });
 });
 
 
-
 export default userRoutes
+
+/*
+userRoutes.get('/me', authMiddleware,async(c) => {
+    const user = c.get("user") as { id: string; username: string; admin: boolean };
+    
+    if (!user) return c.json({ error: "User not found" }, 404);
+    
+    const dbUser = await getUserById(user.id);
+    if (!dbUser) return c.json({ error: "User not found in database" }, 404);
+    
+    return c.json({message: 'GET /users/me', user: dbUser});
+});
+// TODO: fix the /:id and /me routes, they are mixing up, but working
+userRoutes.patch('/me', authMiddleware, async(c) => {
+    const user = c.get("user") as { id: string; username: string; admin: boolean };
+    const editedUser = await c.req.json();
+
+    
+    if (!user) return c.json({ error: "User not found" }, 404);
+    
+    const dbUser = await getUserById(user.id);
+
+    if (!dbUser) return c.json({ error: "User not found in database" }, 404);
+
+    const changedUser = await editUser(user.id, editedUser);
+
+    console.log("Changed user:", changedUser);
+    console.log("edited user:", editedUser);
+
+    return c.json({ message: 'PATCH /users/me', user: changedUser });
+})
+*/

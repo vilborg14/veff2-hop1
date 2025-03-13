@@ -45,14 +45,14 @@ model TaskImage {
 }
 
 model Tag {
-  id    String     @id @default(uuid())
+  id    Int     @id @default(autoincrement())
   name  String     @unique
   tasks TaskTags[]
 }
 
 model TaskTags {
   taskId String
-  tagId  String
+  tagId  Int
   task   Task   @relation(fields: [taskId], references: [id])
   tag    Tag    @relation(fields: [tagId], references: [id])
 

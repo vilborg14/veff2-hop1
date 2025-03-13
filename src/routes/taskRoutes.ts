@@ -6,7 +6,9 @@ import {
     getAllTasks,
     getTaskById,
     editTask,
-    validateTask
+    validateTask,
+    assignTagToTask,
+    removeTagFromTask
 } from "../databaseCalls/tasks.db.js";
 
 const taskRoutes = new Hono<{Variables: { user: AuthenticatedUser }}>();
@@ -98,7 +100,6 @@ taskRoutes.delete('/:id', authMiddleware, async (c) => {
     return c.json({ message: 'task deleted with id: ' + id });
 });
 
-
 taskRoutes.patch('/:id', authMiddleware, async(c) => {
     const user = c.get("user") as AuthenticatedUser;
     const id = c.req.param('id');
@@ -133,6 +134,52 @@ taskRoutes.patch('/:id', authMiddleware, async(c) => {
 });
 
 
-// mynda routes koma probs hér
+// assign and remove tags to/from tasks
+taskRoutes.post('/:taskId/tags/:tagId', authMiddleware, async (c) => {
+    const taskId = c.req.param('taskId');
+    const tagId = parseInt(c.req.param('tagId'));
+
+    if (!taskId) {
+        return c.json({ error: "Task ID not provided" }, 400);
+    }
+
+    if (!tagId) {
+        return c.json({ error: "Tag ID not provided" }, 400);
+    }
+
+    const assignedTag = await assignTagToTask(taskId, tagId);
+
+    if (!assignedTag) {
+        return c.json({ error: "Tag not found" }, 404);
+    }
+
+    return c.json({ message: 'Tag assigned to task', tag: assignedTag });
+    
+
+});
+
+taskRoutes.delete('/:taskId/tags/:tagId', authMiddleware, async (c) => {
+    const taskId = c.req.param('taskId');
+    const tagId = parseInt(c.req.param('tagId'));
+
+    if (!taskId) {
+        return c.json({ error: "Task ID not provided" }, 400);
+    }
+
+    if (!tagId) {
+        return c.json({ error: "Tag ID not provided" }, 400);
+    }
+
+    const removedTag = await removeTagFromTask(taskId, tagId);
+
+    if (!removedTag) {
+        return c.json({ error: "Tag not found" }, 404);
+    }
+
+    return c.json({ message: 'Tag removed from task', tag: removedTag });
+
+});
+
+
 
 export default taskRoutes
