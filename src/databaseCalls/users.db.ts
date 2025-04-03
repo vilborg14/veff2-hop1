@@ -1,9 +1,12 @@
 //import {bcrypt} from "bcryptjs";
-import * as jwt from "jsonwebtoken";
+//import * as jwt from "jsonwebtoken";
 import prisma from "../lib/client.js";
 import { z } from "zod";
 import xss from "xss";
-import * as bcrypt from "bcrypt";
+
+//import * as bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 //const bcrypt = await import("bcryptjs");
 
@@ -51,11 +54,13 @@ export async function loginUser(username: string, password: string) {
     const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch) return "Invalid password";
 
+    console.log(passwordMatch);
+
     // TODO: change to resonable time
     const token = jwt.sign({ id: user.id, admin: user.admin }, SECRET_KEY, { expiresIn: "3h" });
 
     console.log(token);
-    return token;
+    return {token, user};
 }
 
 export async function getAllUsers(limit = 10, offset?: number): Promise<Array<User> | null> {

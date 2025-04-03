@@ -1,5 +1,6 @@
 import type { Context, Next } from "hono";
-import * as jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 const SECRET_KEY = process.env.JWT_SECRET as string || "a-string-secret-at-least-256-bits-long";
 interface AuthenticatedUser {

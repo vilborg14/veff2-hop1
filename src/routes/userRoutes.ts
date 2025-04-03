@@ -89,13 +89,14 @@ userRoutes.post('/register', async(c) => {
         return c.json({ error: validUser.error.flatten(), message: "Invalid user"	 }, 400);
     }
 
-    createUser(validUser.data);
+    await createUser(validUser.data);
     
-    return c.json({ message: 'POST /users/register', user: validUser });
+    return c.json({user: validUser.data});
 });
 
 userRoutes.post('/login', async(c) => {
     const body = await c.req.json();
+    console.log(body);
     try {
         const result = await loginUser(body.username, body.password);
     
@@ -103,7 +104,7 @@ userRoutes.post('/login', async(c) => {
         return c.json({ error: "Invalid credentials" }, 401);
     }
 
-    return c.json({ message: 'POST /users/login', token : result });
+    return c.json(result);
     }
     catch (error) {
         return c.json({ error: error }, 400);

@@ -1,5 +1,6 @@
 import { serve } from '@hono/node-server'
 import { Hono } from 'hono'
+import { cors } from "hono/cors";
 
 // routes from folder
 import taskRoutes from "./routes/taskRoutes.js";
@@ -9,6 +10,14 @@ import tagRoutes from "./routes/tagsRoutes.js";
 import imageRoutes from "./routes/imageRoutes.js";
 
 const app = new Hono();
+
+app.use('/*', cors({origin: '*'}))
+app.notFound((c) => c.json({ error: 'Not found' }, 404));
+app.onError((err,c) => {
+  console.error(err.name, err.message);
+
+  return c.json({ error: 'internal server error' }, 500);
+});
 
 
 app.get('/', (c) => {
@@ -35,7 +44,7 @@ app.onError((err, c) => {
 
 if (process.env.NODE_ENV !== "test") {
   serve(
-    { fetch: app.fetch, port: 3000 },
+    { fetch: app.fetch, port: 3001 },
     (info) => {
       console.log(`Server is running on http://localhost:${info.port}`);
     }
