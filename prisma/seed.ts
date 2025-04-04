@@ -18,6 +18,19 @@ async function main() {
     });
 
     console.log({ admin, user });
+
+    const categories = await prisma.category.createMany({
+        data: [
+            { title: "Category 1" },
+            { title: "category 2" },
+            { title: "category 3" },
+        ],
+    });
+
+    
+
+    console.log({ categories });
+
     
 }
 
