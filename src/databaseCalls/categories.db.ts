@@ -17,7 +17,7 @@ type Category = z.infer<typeof categorySchema>;
 
 
 // TODO: implement the calls using type Category
-export async function getAllCategories(limit=10, offset?: number):
+export async function getAllCategories(limit=10, offset: number = 0):
     Promise<Array<Category>> {
         const categories = await prisma.category.findMany(
             {

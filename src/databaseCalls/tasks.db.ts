@@ -16,8 +16,7 @@ const createTaskSchema = z.object({
     title: z.string().max(1000, "Title must be less than 1000 characters").min(1, "Title must be at least 1 character"), // hérna voru 2 , en myndar ves f mig þannig bæta við ef issues
     description: z.string().nullable().optional(),
     due: z.date().nullable(),
-    categoryId: z.string().nullable(),
-    userId: z.string().nullable(),
+    categoryId: z.string().nullable()
 });
 
 type Task = z.infer<typeof taskSchema>;

@@ -18,6 +18,7 @@ model User {
   username    String @unique
   password String
   admin Boolean @default(false)
+  imageUrl String?
   tasks    Task[]
 }
 

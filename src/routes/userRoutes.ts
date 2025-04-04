@@ -1,6 +1,7 @@
 import { Hono } from 'hono';
 import { authMiddleware, adminMiddleware } from '../middleware/authMiddleware.js';
 import { getUserById, getAllUsers, createUser, loginUser, editUser, validateUser } from '../databaseCalls/users.db.js';
+import cloudinary from '../lib/cloudinary.js';
 
 const userRoutes = new Hono<{Variables: { user: AuthenticatedUser }}>();
 
@@ -15,8 +16,9 @@ userRoutes.get('/', authMiddleware, adminMiddleware, async(c) => {
     if (!user || !user.admin) {
         return c.json({ error: "Forbidden - Admin only" }, 401);
     }
+    const offset = parseInt(c.req.query("offset") ?? "0") ?? 0;
     
-    const users = await getAllUsers();
+    const users = await getAllUsers(10, offset);
     //return c.json({ message: 'GET /users', users });
     return c.json(users)
 });
@@ -89,13 +91,14 @@ userRoutes.post('/register', async(c) => {
         return c.json({ error: validUser.error.flatten(), message: "Invalid user"	 }, 400);
     }
 
-    createUser(validUser.data);
+    await createUser(validUser.data);
     
-    return c.json({ message: 'POST /users/register', user: validUser });
+    return c.json({user: validUser.data});
 });
 
 userRoutes.post('/login', async(c) => {
     const body = await c.req.json();
+    console.log(body);
     try {
         const result = await loginUser(body.username, body.password);
     
@@ -103,13 +106,45 @@ userRoutes.post('/login', async(c) => {
         return c.json({ error: "Invalid credentials" }, 401);
     }
 
-    return c.json({ message: 'POST /users/login', token : result });
+    return c.json(result);
     }
     catch (error) {
         return c.json({ error: error }, 400);
     }
 
 });
+
+
+userRoutes.post('/upload', async (c) => {
+    const body = await c.req.parseBody();
+    const files = body.image;
+
+    if (!files || (Array.isArray(files) && files.length === 0)) {
+        return c.json({ error: "No files uploaded" }, 400);
+    }
+
+    const fileArray = Array.isArray(files) ? files : [files];
+    const processedFiles = await Promise.all(
+        fileArray.map(async (file) => {
+            const buffer = await file.arrayBuffer();
+
+            const base64 = buffer.toString("base64");
+
+            const result = await cloudinary.uploader.upload(`data:${file.type};base64,${base64}`, {
+                resource_type: "image",
+                folder: "uploads",
+            });
+
+            return {
+                name: file.name,
+                url: result.secure_url,
+            }
+    }))
+
+    return c.json({ message: "Files uploaded", files: processedFiles });
+
+
+})
 
 
 export default userRoutes
