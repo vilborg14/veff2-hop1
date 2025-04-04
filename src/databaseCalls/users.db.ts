@@ -85,6 +85,7 @@ export async function createUser(body: z.infer<typeof createUserSchema>) {
             username: safeUsername,
             password: hashedPassword,
             admin : false,     
+            imageUrl: null
         },
     });
     return user??null;
