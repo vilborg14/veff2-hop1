@@ -1,7 +1,8 @@
 import { Hono } from 'hono';
 import { authMiddleware, adminMiddleware } from '../middleware/authMiddleware.js';
 import { getUserById, getAllUsers, createUser, loginUser, editUser, validateUser } from '../databaseCalls/users.db.js';
- 
+import cloudinary from '../lib/cloudinary.js';
+
 const userRoutes = new Hono<{Variables: { user: AuthenticatedUser }}>();
 
 interface AuthenticatedUser {
@@ -15,8 +16,9 @@ userRoutes.get('/', authMiddleware, adminMiddleware, async(c) => {
     if (!user || !user.admin) {
         return c.json({ error: "Forbidden - Admin only" }, 401);
     }
+    const offset = parseInt(c.req.query("offset") ?? "0") ?? 0;
     
-    const users = await getAllUsers();
+    const users = await getAllUsers(10, offset);
     //return c.json({ message: 'GET /users', users });
     return c.json(users)
 });
@@ -111,6 +113,38 @@ userRoutes.post('/login', async(c) => {
     }
 
 });
+
+
+userRoutes.post('/upload', async (c) => {
+    const body = await c.req.parseBody();
+    const files = body.image;
+
+    if (!files || (Array.isArray(files) && files.length === 0)) {
+        return c.json({ error: "No files uploaded" }, 400);
+    }
+
+    const fileArray = Array.isArray(files) ? files : [files];
+    const processedFiles = await Promise.all(
+        fileArray.map(async (file) => {
+            const buffer = await file.arrayBuffer();
+
+            const base64 = buffer.toString("base64");
+
+            const result = await cloudinary.uploader.upload(`data:${file.type};base64,${base64}`, {
+                resource_type: "image",
+                folder: "uploads",
+            });
+
+            return {
+                name: file.name,
+                url: result.secure_url,
+            }
+    }))
+
+    return c.json({ message: "Files uploaded", files: processedFiles });
+
+
+})
 
 
 export default userRoutes

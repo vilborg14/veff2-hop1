@@ -18,6 +18,7 @@ const userSchema = z.object({
     username: z.string().max(100, "Username must be less than 100 characters").min(1, "Username must be at least 1 character"),
     password: z.string(),
     admin: z.boolean(),
+    imageUrl: z.string().nullable(),
 });
 
 const createUserSchema = z.object({
@@ -64,11 +65,11 @@ export async function loginUser(username: string, password: string) {
 }
 
 export async function getAllUsers(limit = 10, offset?: number): Promise<Array<User> | null> {
-    const users = await prisma.user.findMany(
-        {
-            take: limit,
-            skip: offset,
-        }
+    const users = await prisma.user.findMany({
+        take: limit,
+        skip: offset ?? 0
+    }
+        
     );
     return users ?? null;
 }

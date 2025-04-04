@@ -19,6 +19,14 @@ interface AuthenticatedUser {
 
 taskRoutes.get('/', authMiddleware, async (c) => {
     const user = c.get("user") as AuthenticatedUser;
+    let offset: number | undefined
+    try {
+        offset = parseInt(c.req.query("offset") ?? "0") ?? 0;
+    } catch (error) {
+        return c.json({ error: "Invalid offset" }, 400);
+    }
+
+    
 
     if (!user) {
         return c.json({ error: "User not found" }, 401);
@@ -26,7 +34,7 @@ taskRoutes.get('/', authMiddleware, async (c) => {
 
     const userId = user.id;
 
-    const tasks = await getAllTasks(userId);
+    const tasks = await getAllTasks(userId, 10, offset);
     if (!tasks) {
         return c.json({ error: "Tasks not found" }, 404);
     }
