@@ -2,14 +2,23 @@ import prisma from "../src/lib/client.js";
 import bcrypt from "bcrypt";
 
 async function main() {
-    const user = await prisma.user.create({
+    const admin = await prisma.user.create({
         data: {
             username: "admin",
             password: await bcrypt.hash("password", 10),
             admin: true,
         },
     });
-    console.log(user);
+
+    const user = await prisma.user.create({
+        data: {
+            username: "user",
+            password: await bcrypt.hash("password", 10)
+        },
+    });
+
+    console.log({ admin, user });
+    
 }
 
 main()

@@ -143,7 +143,7 @@ Images
 
 ## Keyrsla verkefnis
 
-postman_collection.json skrá er í rót verkefnis, hægt er að opna hana í postman, þar eru allir routes, með dæmi um innsettningu. 
+postman_collection.json skrá er í rót verkefnis, hægt er að opna hana í postman, þar eru allir routes, með dæmi um innsettningu. Ehv af routes eru með rangt port, hægt að breyta í breytu. 
 
 
 ```bash
@@ -153,13 +153,9 @@ cd veff2-hop1
 
 npm install 
 
-## prisma todo hér + .env
+npx prisma db push --force-reset # Ef gagnagrunnur er ekki tómur
+npx prsima db seed # Mock gögn
 
-npx prisma migrate # prisma dot
-
-
-npx prisma migrate reset # ef database er ekki tómur
-npx ts-node prisma/seed.js # seeder for prisma, með mock gögnum
 
 npm run dev  #localhost:3000
 npm run lint # linter
@@ -174,7 +170,7 @@ npm run lint # linter
     "password": "password"
 }
 {
-    "username" : "user1",
+    "username" : "user",
     "password": "password"
 }
 

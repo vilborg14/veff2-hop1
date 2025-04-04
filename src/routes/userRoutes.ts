@@ -116,30 +116,27 @@ userRoutes.post('/login', async(c) => {
 
 
 userRoutes.post('/upload', async (c) => {
-    const body = await c.req.parseBody();
-    const files = body.image;
+    const formData = await c.req.formData();
 
-    if (!files || (Array.isArray(files) && files.length === 0)) {
-        return c.json({ error: "No files uploaded" }, 400);
+    const file = formData.get('image');
+
+    if (!file || typeof file === 'string') {
+        return c.json({ error: "no files uploaded" }, 400);
     }
 
-    const fileArray = Array.isArray(files) ? files : [files];
-    const processedFiles = await Promise.all(
-        fileArray.map(async (file) => {
-            const buffer = await file.arrayBuffer();
+    const buffer = Buffer.from(await file.arrayBuffer());
+    const base64 = buffer.toString('base64');
+    const result = await cloudinary.uploader.upload(`data:${file.type};base64,${base64}`, {
+        resource_type: 'image',
+        folder: 'uploads',
+    });
 
-            const base64 = buffer.toString("base64");
-
-            const result = await cloudinary.uploader.upload(`data:${file.type};base64,${base64}`, {
-                resource_type: "image",
-                folder: "uploads",
-            });
-
-            return {
-                name: file.name,
-                url: result.secure_url,
-            }
-    }))
+    const processedFiles = [{
+        name: file.name,
+        type: file.type,
+        size: file.size,
+        url: result.secure_url
+    }]
 
     return c.json({ message: "Files uploaded", files: processedFiles });
 
