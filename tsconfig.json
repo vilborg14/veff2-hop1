@@ -9,7 +9,6 @@
       "node"
     ],
     "outDir": "dist",
-    "rootDir": "src",
     "jsx": "react-jsx",
     "jsxImportSource": "hono/jsx"
   }
