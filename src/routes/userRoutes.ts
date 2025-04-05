@@ -58,12 +58,9 @@ userRoutes.patch('/:id', authMiddleware, async (c) => {
         return c.json({ error: "user not found" }, 401);
     }
 
-    if (!user.admin) {
-        return c.json({ error: "Forbidden - Admin only" }, 403);
-    }
-
     const id = c.req.param('id');
     const body = await c.req.json();
+    console.log(body);
     try {
         const result = await editUser(id, body);
         return c.json(result);

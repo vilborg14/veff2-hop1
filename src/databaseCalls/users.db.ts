@@ -100,9 +100,7 @@ export async function editUser(id: string, body: User) {
     const user = await prisma.user.update({
         where: { id: id },
         data: {
-            username: safeUsername,
-            password: hashedPassword,
-            admin : body.admin,
+            
             imageUrl: body.imageUrl
         },
     });
