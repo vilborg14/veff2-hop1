@@ -53,5 +53,5 @@ npx prisma db seed
 
 # til að endursetja gagnagrunn
 npx prisma db push --force-reset
-npx prisma db seed+
+npx prisma db seed
 */

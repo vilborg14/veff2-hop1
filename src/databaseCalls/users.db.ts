@@ -103,6 +103,7 @@ export async function editUser(id: string, body: User) {
             username: safeUsername,
             password: hashedPassword,
             admin : body.admin,
+            imageUrl: body.imageUrl
         },
     });
     return user ?? null;

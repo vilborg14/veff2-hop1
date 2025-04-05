@@ -51,7 +51,7 @@ userRoutes.get('/:id', authMiddleware, adminMiddleware,async(c) => {
 });
 
 
-userRoutes.patch('/:id', authMiddleware, adminMiddleware, async (c) => {
+userRoutes.patch('/:id', authMiddleware, async (c) => {
     const user = c.get("user") as { id: string; username: string; admin: boolean };
 
     if (!user) {
